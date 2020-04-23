@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, Modal } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Modal } from "react-native";
 import styles from "../constants/styles";
 
 const InputForm = ({
   placeholder,
   onPressAdd,
-  btnTitle,
   visible,
   closeModal,
   isShowError,
@@ -19,6 +18,10 @@ const InputForm = ({
 
   const onAddGoal = () => {
     onPressAdd(enteredGoal);
+    setEnteredGoal("");
+  };
+
+  const onCancel = () => {
     closeModal();
     setEnteredGoal("");
   };
@@ -36,12 +39,22 @@ const InputForm = ({
         {isShowError && (
           <Text style={{ color: "red", fontSize: 15 }}> {goalError} </Text>
         )}
-        <Button
-          title={btnTitle}
-          style={styles.add}
-          onPress={() => onAddGoal()}
-        />
-        <Button title="Cancel" onPress={closeModal} />
+        <View style={styles.btnLayout}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.btnNewGoal}
+            onPress={onAddGoal}
+          >
+            <Text style={styles.text}> SAVE </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={[styles.btnNewGoal, { backgroundColor: "red" }]}
+            onPress={onCancel}
+          >
+            <Text style={styles.text}> CANCEL </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </Modal>
   );
