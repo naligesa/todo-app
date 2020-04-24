@@ -3,6 +3,11 @@ import { Text, View, Button, TouchableOpacity } from "react-native";
 import InputForm from "../components/inputForm";
 import List from "../components/List";
 import styles from "../constants/styles";
+import {
+  hint_input,
+  btn_title_add,
+  input_goal_error,
+} from "../constants/strings";
 
 const TodoList = () => {
   const [courseGoals, setCourseGoals] = useState([]);
@@ -21,7 +26,7 @@ const TodoList = () => {
     } else {
       setShowError(true);
       setShowModal(true);
-      setGoalError("Enter a goal!!!");
+      setGoalError(input_goal_error);
     }
   };
 
@@ -39,9 +44,9 @@ const TodoList = () => {
         <Text style={styles.text}> Add New Goal</Text>
       </TouchableOpacity>
       <InputForm
-        placeholder="Enter course goal..."
+        placeholder={hint_input}
         onPressAdd={addGoalHandler}
-        btnTitle="Add"
+        btnTitle={btn_title_add}
         visible={showModal}
         closeModal={() => setShowModal(false)}
         isShowError={isShowError}
