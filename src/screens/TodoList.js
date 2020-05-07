@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { Text, View, Button, TouchableOpacity } from "react-native";
 import InputForm from "../components/inputForm";
 import List from "../components/List";
@@ -15,24 +15,52 @@ const TodoList = () => {
   const [isShowError, setShowError] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const addGoalHandler = (inputText) => {
-    if (inputText.trim() !== "") {
-      setShowError(false);
-      setCourseGoals([
-        ...courseGoals,
-        { id: Math.random().toString(), value: inputText },
-      ]);
-      setShowModal(false);
-    } else {
-      setShowError(true);
-      setShowModal(true);
-      setGoalError(input_goal_error);
-    }
-  };
+  console.log("Parent Component rendered");
 
-  const removeGoal = (goalId) => {
-    setCourseGoals(courseGoals.filter((goal) => goal.id !== goalId));
-  };
+  const addGoalHandler = useCallback(
+    (inputText) => {
+      if (inputText.trim() !== "") {
+        setShowError(false);
+        setCourseGoals([
+          ...courseGoals,
+          { id: Math.random().toString(), value: inputText },
+        ]);
+        setShowModal(false);
+      } else {
+        setShowError(true);
+        setShowModal(true);
+        setGoalError(input_goal_error);
+      }
+    },
+    [setShowError, setCourseGoals, setShowModal, setGoalError]
+  );
+
+  const removeGoal = useCallback(
+    (goalId) => {
+      setCourseGoals(courseGoals.filter((goal) => goal.id !== goalId));
+    },
+    [setCourseGoals]
+  );
+
+  const InputA = useMemo(
+    () => (
+      <InputForm
+        placeholder={hint_input}
+        onPressAdd={addGoalHandler}
+        btnTitle={btn_title_add}
+        visible={showModal}
+        closeModal={() => setShowModal(false)}
+        isShowError={isShowError}
+        goalError={goalError}
+      />
+    ),
+    [addGoalHandler, showModal, goalError, isShowError]
+  );
+
+  const ListA = useMemo(
+    () => <List goals={courseGoals} onPressGoal={removeGoal} />,
+    [courseGoals, removeGoal]
+  );
 
   return (
     <View style={styles.container}>
@@ -43,16 +71,8 @@ const TodoList = () => {
       >
         <Text style={styles.text}> Add New Goal</Text>
       </TouchableOpacity>
-      <InputForm
-        placeholder={hint_input}
-        onPressAdd={addGoalHandler}
-        btnTitle={btn_title_add}
-        visible={showModal}
-        closeModal={() => setShowModal(false)}
-        isShowError={isShowError}
-        goalError={goalError}
-      />
-      <List goals={courseGoals} onPressGoal={removeGoal} />
+      {InputA}
+      {ListA}
     </View>
   );
 };

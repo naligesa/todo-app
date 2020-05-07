@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { View, TextInput, TouchableOpacity, Text, Modal } from "react-native";
 import styles from "../constants/styles";
 
@@ -11,6 +11,8 @@ const InputForm = ({
   goalError,
 }) => {
   const [enteredGoal, setEnteredGoal] = useState("");
+
+  console.log("Input (Child) component rendered");
 
   const goalInputHandler = (text) => {
     setEnteredGoal(text);

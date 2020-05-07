@@ -3,6 +3,7 @@ import { Text, View, FlatList, TouchableOpacity } from "react-native";
 import styles from "../constants/styles";
 
 const List = ({ goals, onPressGoal }) => {
+  console.log("List (Child) component rendered");
   return (
     <FlatList
       style={styles.list}
